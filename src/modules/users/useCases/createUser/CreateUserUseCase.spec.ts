@@ -1,4 +1,6 @@
 import { InMemoryUsersRepository } from "@modules/users/repositories/in-memory/InMemoryUsersRepository";
+import { AppError } from "@shared/errors/AppError";
+import { Any } from "typeorm";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 
 let createUserUseCase: CreateUserUseCase;
@@ -24,5 +26,27 @@ describe('Create User', () => {
     });
 
     expect(userCreated).toHaveProperty("id");
-  })
+  });
+
+  it("should not be able to create user with email already exist.", async () => {
+    let error = Any;
+
+    await createUserUseCase.execute({
+      name: "User Name",
+      email: "user@mail.com",
+      password: "password"
+    });
+
+    try {
+      await createUserUseCase.execute({
+        name: "Another User",
+        email: "user@mail.com",
+        password: "password"
+      });
+    } catch (e) {
+      error = e;
+    }
+
+    expect(error).toEqual(new AppError('User already exists'))
+  });
 });
