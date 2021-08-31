@@ -1,6 +1,5 @@
 import { InMemoryUsersRepository } from "@modules/users/repositories/in-memory/InMemoryUsersRepository";
 import { AppError } from "@shared/errors/AppError";
-import { Any } from "typeorm";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { ShowUserProfileUseCase } from "./ShowUserProfileUseCase";
 
